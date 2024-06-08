@@ -10,7 +10,9 @@ logging.basicConfig(filename='app.log', level=logging.ERROR, format='%(asctime)s
 app = FastAPI()
 
 origins = [
-    "http://8.219.207.170:80"
+    "http://8.219.207.170",  # Your actual IP address
+    "http://8.219.207.170:80",  # If you specify port explicitly
+    "http://8.219.207.170:3000",  # If your frontend runs on a specific port
 ]
 
 app.add_middleware(
