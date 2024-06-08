@@ -10,7 +10,7 @@ logging.basicConfig(filename='app.log', level=logging.ERROR, format='%(asctime)s
 app = FastAPI()
 
 origins = [
-    "http://8.219.207.170/"
+    "http://8.219.207.170:80"
 ]
 
 app.add_middleware(
