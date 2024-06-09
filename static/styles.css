@@ -1,0 +1,241 @@
+/* 添加背景图的样式 */
+.roll-btn {
+    width: 100px; /* 调整按钮宽度 */
+    height: 100px; /* 调整按钮高度 */
+    margin: 0 20px; /* 按钮之间留出一些间距 */
+    cursor: pointer; /* 光标指针 */
+}
+
+body {
+    font-family: 'NotoSans', sans-serif;
+    background-color: #1e1e2f;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+input, textarea {
+    font-family: 'SourceCodePro', monospace;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px;
+    text-align: center;
+    background-color: #1e1e2f;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    color: #e0e0e0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    font-family: 'NotoSans', sans-serif;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* 增加间距 */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.upload-btn, .instruction-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    background-color: #3d3d5c;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    white-space: nowrap;
+}
+
+.upload-btn:hover, .instruction-btn:hover {
+    background-color: #4e4e70;
+    transform: translateY(-2px);
+}
+
+#result {
+    background-color: #2a2a40;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    white-space: pre-wrap;
+    text-align: left;
+    font-family: 'SourceCodePro', monospace;
+}
+
+pre {
+    margin: 0;
+}
+
+.instruction-section {
+    margin-bottom: 10px; /* 减少每个部分之间的间隔 */
+}
+
+.instruction-title {
+    font-size: 1.2em;
+    margin: 0 0 5px 0; /* 减少标题下方的间隔 */
+}
+
+.instruction-content {
+    margin: 0; /* 去除内容下方的间隔 */
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* 默认隐藏 */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #1e1e2f;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px; /* 调整最大宽度，使其比原窗口小 */
+    border-radius: 20px;
+    color: #e0e0e0;
+    text-align: left;
+    position: relative; /* 允许内容相对定位 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.inline-group {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px; /* 中间留出10px空隙 */
+}
+
+.form-group label {
+    margin-bottom: 10px;
+    white-space: nowrap; /* 确保标签在一行显示 */
+}
+
+.form-group input[type="number"] {
+    width: 60px; /* 缩短角色ID输入框的长度 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #2a2a40;
+    color: #e0e0e0;
+}
+
+.form-group input[type="checkbox"] {
+    margin-left: 10px; /* 与左侧文本留出10px空隙 */
+}
+
+.form-group textarea {
+    width: calc(100% - 20px); /* 留出左右边距 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #2a2a40;
+    color: #e0e0e0;
+    font-family: 'SourceCodePro', monospace;
+}
+
+.warning {
+    color: #ff6f61; /* Warning color */
+}
+
+.modal-button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modal-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #4e4e70; /* Modal button color */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    width: auto; /* 调整按钮宽度 */
+    max-width: none; /* 取消按钮最大宽度限制 */
+    box-sizing: border-box;
+}
+
+.modal-btn:hover {
+    background-color: #5f5f85;
+    transform: translateY(-2px);
+}
+
+/* Loading styles */
+.loading {
+    display: none; /* 默认隐藏 */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.spinner {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+body.loading-active {
+    background-color: rgba(0, 0, 0, 0.5); /* 暗化背景 */
+    pointer-events: none; /* 禁用所有交互 */
+}
+
+body.loading-active .container {
+    opacity: 0.5; /* 半透明容器 */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .button-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .modal-button-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
