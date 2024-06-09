@@ -13,65 +13,74 @@ document.addEventListener('DOMContentLoaded', function () {
         const message = JSON.parse(event.data);
         let output = '';
     
-        if (message.command.toLowerCase() === 'r') {
-            output += `<h3>掷骰指令：${message.result[0]}</h3>`;
-            output += `<p>点数：${message.result[1]}</p>`;
-            output += `<p>每次骰点结果：${message.result[2].join(', ')}<p>`;
-        } else if (message.command.toLowerCase() === 'rm') {
-            output += `<h3>掷骰指令: ${message.result[0]}</h3>`;
-            output += `<p>点数: ${message.result[1]}</p>`;
-            output += `<p>每次骰点结果: ${message.result[2].join(', ')}<p>`;
-        } else if (message.command.toLowerCase() === 'rd') {
-            output += `<h3>属性掷骰：${message.result[0]} - ${message.result[1]}</h3>`;
-            output += `<p>点数：${message.result[2]}，${message.result[3]}<p>`;
-        } else if (message.command.toLowerCase() === 'rh') {
-            output += `<h3>暗骰点数：${message.result}</h3>`;
-        } else if (message.command.toLowerCase() === 'rav' || message.command.toLowerCase() === 'ravs') {
-            if (message.result.length === 11) {
-                output += `<h3>对抗骰点：PC${message.result[0]} vs. PC${message.result[1]}</h3>`;
-                output += `<p>PC${message.result[0]} - ${message.result[2]} - 属性${message.result[4]}/出目${message.result[6]} - ${message.result[8]}</p>`;
-                output += `<p>PC${message.result[1]} - ${message.result[3]} - 属性${message.result[5]}/出目${message.result[7]} - ${message.result[9]}</p>`;
-                output += `<p><strong>PC${message.result[10]}胜利</strong></p>`
-            } else if  (message.result.length === 9) {
-                output += `<h3>对抗骰点：NPC vs. PC${message.result[0]}</h3>`;
-                output += `<p>NPC - 属性${message.result[2]}/出目${message.result[4]} - ${message.result[6]}</p>`;
-                output += `<p>PC${message.result[0]} - ${message.result[1]} - 属性${message.result[3]}/出目${message.result[5]} - ${message.result[7]}</p>`;
-                output += `<p><strong>${message.result[8] === 1 ? "PC" : "NPC"}胜利</strong></p>`
-            } else if (message.result.length === 7) {
-                output += `<h3>对抗骰点：NPC1 vs. NPC2</h3>`;
-                output += `<p>NPC1 - 属性${message.result[0]}/出目${message.result[2]} - ${message.result[4]}</p>`;
-                output += `<p>NPC2 - 属性${message.result[1]}/出目${message.result[3]} - ${message.result[5]}</p>`;
-                output += `<p><strong>${message.result[6]}胜利</strong></p>`
-            }
-        } else if (message.command.toLowerCase() === 'sc') {
-            if (message.result.length === 7) {
-                output += `<h3>San Check ${message.result[0]}/${message.result[1]}</h3>`;
-                output += `<p>灵感 - 属性${message.result[2]}/出目${message.result[4]} - ${message.result[3]}</p>`;
-                output += `<p>San值减少${message.result[5]}点，剩余San:${message.result[6]}`;
-            } else if (message.result.length === 2) {
-                output += `<h3>San值恢复</h3>`;
-                output += `<p>恢复量 - ${message.result[0]}</p>`;
-                output += `<p>当前San - ${message.result[1]}</p>`;
-            }
-        } else if (message.command.toLowerCase() === 'st') {
-            output += `<h3>属性查询</h3>`;
-            output += `<p>属性：${message.result[0]}</p>`;
-            output += `<p>属性值：${message.result[1]}</p>`;
-        } else if (message.command.toLowerCase() === 'hp') {
-            output += `<h3>HP调整</h3>`
-            output += `<p>调整值：${message.result[0]}</p>`;
-            if (message.result[0] !== message.result[1]) {
-                output += `<p>出目：${message.result[1]}</p>`;
-            }
-            output += `<p>当前HP：${message.result[2]}</p>`;
+        if (typeof message === 'string' && (message === 'pong' || message === 'ping')) {
+            console.log('Received', message, 'from server');
+            return;
         }
     
-        output += `<p>IP 地址：${message.ip}</p>`;
-        output += `<p>当前时间：${message.time}</p>`;
+        if (message.command && typeof message.command === 'string') {
+            if (message.command.toLowerCase() === 'r') {
+                output += `<h3>掷骰指令：${message.result[0]}</h3>`;
+                output += `<p>点数：${message.result[1]}</p>`;
+                output += `<p>每次骰点结果：${message.result[2].join(', ')}<p>`;
+            } else if (message.command.toLowerCase() === 'rm') {
+                output += `<h3>掷骰指令: ${message.result[0]}</h3>`;
+                output += `<p>点数: ${message.result[1]}</p>`;
+                output += `<p>每次骰点结果: ${message.result[2].join(', ')}<p>`;
+            } else if (message.command.toLowerCase() === 'rd') {
+                output += `<h3>属性掷骰：${message.result[0]} - ${message.result[1]}</h3>`;
+                output += `<p>点数：${message.result[2]}，${message.result[3]}<p>`;
+            } else if (message.command.toLowerCase() === 'rh') {
+                output += `<h3>暗骰点数：${message.result}</h3>`;
+            } else if (message.command.toLowerCase() === 'rav' || message.command.toLowerCase() === 'ravs') {
+                if (message.result.length === 11) {
+                    output += `<h3>对抗骰点：PC${message.result[0]} vs. PC${message.result[1]}</h3>`;
+                    output += `<p>PC${message.result[0]} - ${message.result[2]} - 属性${message.result[4]}/出目${message.result[6]} - ${message.result[8]}</p>`;
+                    output += `<p>PC${message.result[1]} - ${message.result[3]} - 属性${message.result[5]}/出目${message.result[7]} - ${message.result[9]}</p>`;
+                    output += `<p><strong>PC${message.result[10]}胜利</strong></p>`
+                } else if  (message.result.length === 9) {
+                    output += `<h3>对抗骰点：NPC vs. PC${message.result[0]}</h3>`;
+                    output += `<p>NPC - 属性${message.result[2]}/出目${message.result[4]} - ${message.result[6]}</p>`;
+                    output += `<p>PC${message.result[0]} - ${message.result[1]} - 属性${message.result[3]}/出目${message.result[5]} - ${message.result[7]}</p>`;
+                    output += `<p><strong>${message.result[8] === 1 ? "PC" : "NPC"}胜利</strong></p>`
+                } else if (message.result.length === 7) {
+                    output += `<h3>对抗骰点：NPC1 vs. NPC2</h3>`;
+                    output += `<p>NPC1 - 属性${message.result[0]}/出目${message.result[2]} - ${message.result[4]}</p>`;
+                    output += `<p>NPC2 - 属性${message.result[1]}/出目${message.result[3]} - ${message.result[5]}</p>`;
+                    output += `<p><strong>${message.result[6]}胜利</strong></p>`
+                }
+            } else if (message.command.toLowerCase() === 'sc') {
+                if (message.result.length === 7) {
+                    output += `<h3>San Check ${message.result[0]}/${message.result[1]}</h3>`;
+                    output += `<p>灵感 - 属性${message.result[2]}/出目${message.result[4]} - ${message.result[3]}</p>`;
+                    output += `<p>San值减少${message.result[5]}点，剩余San:${message.result[6]}`;
+                } else if (message.result.length === 2) {
+                    output += `<h3>San值恢复</h3>`;
+                    output += `<p>恢复量 - ${message.result[0]}</p>`;
+                    output += `<p>当前San - ${message.result[1]}</p>`;
+                }
+            } else if (message.command.toLowerCase() === 'st') {
+                output += `<h3>属性查询</h3>`;
+                output += `<p>属性：${message.result[0]}</p>`;
+                output += `<p>属性值：${message.result[1]}</p>`;
+            } else if (message.command.toLowerCase() === 'hp') {
+                output += `<h3>HP调整</h3>`
+                output += `<p>调整值：${message.result[0]}</p>`;
+                if (message.result[0] !== message.result[1]) {
+                    output += `<p>出目：${message.result[1]}</p>`;
+                }
+                output += `<p>当前HP：${message.result[2]}</p>`;
+            }
         
-        setResult(output);
-        loading.style.display = 'none';
-        document.body.classList.remove('loading-active');
+            output += `<p>IP 地址：${message.ip}</p>`;
+            output += `<p>当前时间：${message.time}</p>`;
+            
+            setResult(output);
+            loading.style.display = 'none';
+            document.body.classList.remove('loading-active');
+        } else {
+            console.error('Invalid message format:', message);
+        }
     };
 
     ws.onclose = (event) => {
