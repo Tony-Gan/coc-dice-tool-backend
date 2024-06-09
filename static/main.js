@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const diceForm = document.getElementById('diceForm');
     const resultDiv = document.getElementById('result');
     const loading = document.getElementById('loading'); // 获取加载动画元素
-    const ws = new WebSocket(`ws://${window.location.host}/dice/ws`);
+    const ws = new WebSocket(`ws://127.0.0.1/dice/ws`);
 
     function setResult(output) {
         const resultDiv = document.getElementById('result');
