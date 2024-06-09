@@ -82,6 +82,12 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('WebSocket error:', error);
     };
 
+    setInterval(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'ping' }));
+        }
+    }, 60000);
+
     diceForm.addEventListener('submit', async function (event) {
         event.preventDefault();
         loading.style.display = 'block';

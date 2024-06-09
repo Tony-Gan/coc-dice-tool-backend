@@ -570,7 +570,10 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_text()
-            await manager.broadcast(data)
+            if data == 'ping':
+                await websocket.send_text('pong')
+            else:
+                await manager.broadcast(data)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 
