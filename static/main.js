@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const resultDiv = document.getElementById('result');
     const loading = document.getElementById('loading'); // 获取加载动画元素
     const ws = new WebSocket(`ws://${window.location.host}/dice/ws`);
-    print(window.location.host)
 
     function setResult(output) {
         const resultDiv = document.getElementById('result');
@@ -121,6 +120,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
+
+            await fetch('/dice/log_command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
             const response = await fetch('/dice/roll', {
                 method: 'POST',
                 headers: {
