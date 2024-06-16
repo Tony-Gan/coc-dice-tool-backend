@@ -4,7 +4,7 @@ import re
 import time
 import random
 import logging
-from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect, Query
 from pydantic import BaseModel
 from typing import Optional, List
 
@@ -34,7 +34,7 @@ class DiceTool:
     @staticmethod
     def roll_dice(command):
         valid_dice_types = {2, 3, 4, 6, 8, 10, 20, 100}
-        pattern = re.compile(r'^\d*d\d+([+-]\d*d\d+|\d+)*$', re.IGNORECASE)
+        pattern = re.compile(r'^(\d*d\d+|\d+)([+-](\d*d\d+|\d+))*$', re.IGNORECASE)
 
         if not pattern.match(command):
             raise InvalidDiceTypeError("输入指令无效，请点击“操作指引”获取帮助。")
@@ -566,6 +566,8 @@ async def get_occupied_ids():
 
 @router.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
+    query_params = websocket.query_params
+    username = query_params.get("username", "临时用户")
     await manager.connect(websocket)
     try:
         while True:
@@ -573,7 +575,9 @@ async def websocket_endpoint(websocket: WebSocket):
             if data == 'ping':
                 await websocket.send_text('pong')
             else:
-                await manager.broadcast(data)
+                message = json.loads(data)
+                message["username"] = username
+                await manager.broadcast(json.dumps(message))
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 

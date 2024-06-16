@@ -1,8 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
     const diceForm = document.getElementById('diceForm');
     const resultDiv = document.getElementById('result');
-    const loading = document.getElementById('loading'); // 获取加载动画元素
-    const ws = new WebSocket(`ws://${window.location.host}/dice/ws`);
+    const loading = document.getElementById('loading'); 
+
+    let username = prompt("请输入你的名字：", "临时用户");
+    if (!username) {
+        username = "临时用户";
+    }
+
+    const ws = new WebSocket(`ws://${window.location.host}/dice/ws?username=${encodeURIComponent(username)}`);
 
     function setResult(output) {
         const resultDiv = document.getElementById('result');
@@ -13,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const message = JSON.parse(event.data);
         let output = '';
     
-        if (typeof message === 'string' && (message === 'pong' || message === 'ping')) {
-            console.log('Received', message, 'from server');
+        if (message.type && (message.type === 'ping' || message.type === 'pong')) {
+            console.log('Received', message.type, 'from server');
             return;
         }
     
@@ -72,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 output += `<p>当前HP：${message.result[2]}</p>`;
             }
         
+            output += `<p>用户名：${message.username}</p>`;
             output += `<p>IP 地址：${message.ip}</p>`;
             output += `<p>当前时间：${message.time}</p>`;
             
@@ -104,14 +111,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const commandInput = document.getElementById('command').value.trim();
         const [cmd, ...args] = commandInput.split(' ');
 
-        const dicePattern = /^(\d*)d(\d+)(([+-]\d*d\d+|\d+)*)$/i;
+        const dicePattern = /^(\d*d\d+|\d+)([+-](\d*d\d+|\d+))*$/i;
 
         let payload;
         
         if (commandInput.match(dicePattern)) {
             payload = {
                 command: 'r',
-                a1: commandInput, // Use the entire command as a1
+                a1: commandInput,
+                username: username,
                 ip: await getIpAddress(),
                 time: new Date().toLocaleTimeString()
             };
@@ -124,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 a4: args[3] || "",
                 a5: args[4] || "",
                 a6: args[5] || "",
+                username: username,
                 ip: await getIpAddress(),
                 time: new Date().toLocaleTimeString()
             };
